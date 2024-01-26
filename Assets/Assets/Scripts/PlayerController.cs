@@ -7,15 +7,19 @@ public class PlayerController : MonoBehaviour
 	BoxCollider2D collider;
 	float distToGround;
     [SerializeField] private LayerMask jumpableGround;
+    [SerializeField] private GameObject ball;
     [SerializeField] float speed = 5f;
     [SerializeField] float jumpForce = 5f;
+    [SerializeField] float rotateSpeed = 5f;
+
 
     // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-				collider = GetComponent<BoxCollider2D>();
-				distToGround = collider.bounds.extents.y;
+		collider = GetComponent<BoxCollider2D>();
+		distToGround = collider.bounds.extents.y;
+
     }
 
     // Update is called once per frame
@@ -24,6 +28,11 @@ public class PlayerController : MonoBehaviour
         float horizontalInput = Input.GetAxis("Horizontal");
 
         rb.velocity = new Vector2(horizontalInput * speed, rb.velocity.y);
+        if (horizontalInput > 0)
+        ball.transform.Rotate(0,0, -rotateSpeed);
+        else if (horizontalInput < 0)
+        ball.transform.Rotate(0,0, +rotateSpeed);
+
 
         if (Input.GetKeyDown("space") && IsGrounded())
         {
